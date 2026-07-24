@@ -1,0 +1,152 @@
+﻿@model _2001230507_NhanTuManh_B2.Models.Promotion
+
+@{
+    ViewBag.Title = "Chi tiết khuyến mãi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // Logic tính toán trạng thái
+    var isExpired = Model.EndDate < DateTime.Now;
+    var isStarted = Model.StartDate <= DateTime.Now;
+    // Sửa lỗi CS0019 tại đây:
+    var isActive = Model.IsActive.GetValueOrDefault() && !isExpired && isStarted;
+
+    // Tính % đã sử dụng
+    var used = Model.UsedCount ?? 0;
+    var limit = Model.UsageLimit;
+    int progressPercent = 0;
+    if (limit.HasValue && limit > 0)
+    {
+        progressPercent = (int)((double)used / limit.Value * 100);
+    }
+}
+
+<div class="container mt-4 admin-container">
+    <h1 class="text-gradient mb-4">
+        <i class="fas fa-ticket-alt"></i> @ViewBag.Title
+    </h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <!-- Header Card: Hiển thị Mã Code to và trạng thái -->
+                <div class="card-header bg-light d-flex justify-content-between align-items-center py-3">
+                    <h3 class="mb-0 text-primary font-monospace fw-bold">
+                        <i class="fas fa-barcode"></i> @Model.PromotionCode
+                    </h3>
+                    <div>
+                        @if (!Model.IsActive.GetValueOrDefault())
+                        {
+                            <span class="badge bg-secondary">Đã tắt (Locked)</span>
+                        }
+                        else if (isExpired)
+                        {
+                            <span class="badge bg-danger">Đã hết hạn</span>
+                        }
+                        else if (!isStarted)
+                        {
+                            <span class="badge bg-warning text-dark">Chưa bắt đầu</span>
+                        }
+                        else if (limit.HasValue && used >= limit)
+                        {
+                            <span class="badge bg-dark">Hết lượt dùng</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Đang hoạt động</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-muted mb-3">Thông tin chung</h5>
+                            <p><strong>Mô tả:</strong> @(string.IsNullOrEmpty(Model.Description) ? "Không có mô tả" : Model.Description)</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded h-100 border">
+                                <h6 class="text-success"><i class="fas fa-money-bill-wave"></i> Giá trị ưu đãi</h6>
+                                <hr />
+                                <p class="mb-1">Loại giảm: <strong>@(Model.DiscountType == "Percentage" ? "Theo phần trăm (%)" : "Số tiền cố định")</strong></p>
+                                <h2 class="text-danger fw-bold my-2">
+                                    @if (Model.DiscountType == "Percentage")
+                                    {
+                                        <span>-@Model.DiscountValue.ToString("N0")%</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-@Model.DiscountValue.ToString("N0") VNĐ</span>
+                                    }
+                                </h2>
+                                <p class="mb-0 text-muted small">
+                                    Đơn tối thiểu: @(Model.MinimumOrderAmount.HasValue ? Model.MinimumOrderAmount.Value.ToString("N0") + " VNĐ" : "0 VNĐ")
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="p-3 bg-light rounded h-100 border">
+                                <h6 class="text-warning"><i class="fas fa-clock"></i> Thời gian áp dụng</h6>
+                                <hr />
+                                <p class="mb-2">
+                                    <strong>Bắt đầu:</strong> <br />
+                                    @Model.StartDate.ToString("dd/MM/yyyy HH:mm")
+                                </p>
+                                <p class="mb-0">
+                                    <strong>Kết thúc:</strong> <br />
+                                    @Model.EndDate.ToString("dd/MM/yyyy HH:mm")
+                                </p>
+                                @if (isExpired)
+                                {
+                                    <div class="mt-2 text-danger small fst-italic">
+                                        <i class="fas fa-exclamation-circle"></i> Đã quá hạn sử dụng
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="text-muted">Thống kê sử dụng</h5>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Đã dùng: <strong>@used</strong> lượt</span>
+                            <span>Giới hạn: <strong>@(limit.HasValue ? limit.ToString() : "Vô hạn")</strong></span>
+                        </div>
+                        @if (limit.HasValue)
+                        {
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar @(progressPercent >= 100 ? "bg-danger" : "bg-success")"
+                                     role="progressbar"
+                                     style="width: @progressPercent%;"
+                                     aria-valuenow="@progressPercent" aria-valuemin="0" aria-valuemax="100">
+                                    @progressPercent%
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%">
+                                    Không giới hạn
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3">
+                        <a href="@Url.Action("Edit", new { id = Model.PromotionID })" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Chỉnh sửa
+                        </a>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Quay lại danh sách
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

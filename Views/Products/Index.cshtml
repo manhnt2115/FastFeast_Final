@@ -1,0 +1,95 @@
+﻿@* Views/Products/Index.cshtml *@
+@model IEnumerable<_2001230507_NhanTuManh_B2.Models.Product>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+
+<div class="container mt-4 admin-container">
+    <h1 class="text-gradient mb-4">
+        <i class="fas fa-hamburger"></i> @ViewBag.Title
+    </h1>
+
+    <p>
+        @Html.ActionLink("Thêm sản phẩm mới", "Create", null, new { @class = "btn btn-admin btn-admin-primary" })
+    </p>
+
+    <div class="admin-table">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Hình ảnh</th>
+                    <th class="sortable" data-column="name">
+                        Tên sản phẩm <i class="fas fa-sort"></i>
+                    </th>
+                    <th>Danh mục</th>
+                    <th class="sortable" data-column="price">
+                        Giá <i class="fas fa-sort"></i>
+                    </th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ImageURL))
+                            {
+                                <img src="@Url.Content(item.ImageURL)" alt="@item.ProductName"
+                                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;" />
+                            }
+                        </td>
+                        <td>@item.ProductName</td>
+                        <td>@item.Category.CategoryName</td>
+                        <td><strong>@item.Price.ToString("N0") VNĐ</strong></td>
+                        <td>
+                            @if (item.IsAvailable)
+                            {
+                                <span class="badge-admin bg-success status-badge status-available">
+                                    Còn hàng
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge-admin bg-danger status-badge status-unavailable">
+                                    Hết hàng
+                                </span>
+                            }
+                        </td>
+                        <td class="table-actions">
+                            <!-- DETAILS BUTTON -->
+                            <a href="@Url.Action("Details", new { id = item.ProductID })"
+                               class="btn btn-sm btn-info btn-icon"
+                               title="Chi tiết"
+                               data-toggle="tooltip">
+                                <i class="fas fa-eye"></i>
+                            </a>
+
+                            <!-- EDIT BUTTON -->
+                            <a href="@Url.Action("Edit", new { id = item.ProductID })"
+                               class="btn btn-sm btn-warning btn-icon"
+                               title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <!-- DELETE BUTTON -->
+                            <a href="@Url.Action("Delete", new { id = item.ProductID })"
+                               class="btn btn-sm btn-danger btn-icon"
+                               title="Xóa">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <!-- CART BUTTON -->
+                            <a href="@Url.Action("AddToCart","Cart", new { productId = item.ProductID })"
+                               class="btn btn-sm btn-admin-primary btn-icon"
+                               title="Thêm vào giỏ">
+                                <i class="fas fa-cart-plus"></i>
+                            </a>
+                        </td>
+                    </tr>
+                 }
+            </tbody>
+        </table>
+    </div>
+</div>

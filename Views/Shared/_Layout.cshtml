@@ -1,0 +1,247 @@
+﻿@* Views/Shared/_Layout.cshtml *@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - FastFeast</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- ✨ THÊM ADMIN CSS -->
+    <link href="~/Content/css/admin.css" rel="stylesheet" />
+
+    <!-- Custom Inline CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.7rem;
+            color: #ff6b35 !important;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+
+        .header-logo img {
+            width: 200px;
+            height: auto;
+        }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 25px 0;
+            border-top: 1px solid #dee2e6;
+            margin-top: 50px;
+        }
+
+        .badge-cart {
+            position: absolute;
+            top: 0;
+            right: 0;
+            transform: translate(50%, -50%);
+            font-size: 0.75rem;
+        }
+    </style>
+
+    @RenderSection("styles", required: false)
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="bg-white border-bottom py-2">
+        <div class="container d-flex justify-content-center header-logo">
+            <a href="@Url.Action("Index","Home")" class="text-center">
+                <img src="~/Content/images/FastFeast_logo-removebg-preview.png" alt="FastFeast Logo" />
+                <h5 class="text-muted mt-2">Enjoy Your Meal</h5>
+            </a>
+        </div>
+
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white mt-2">
+            <div class="container">
+                @Html.ActionLink("FastFeast", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+
+                    <!-- ================= LEFT MENU (PHÂN QUYỀN) ================= -->
+                    <ul class="navbar-nav me-auto">
+
+                        @if (Session["AdminID"] != null)
+                        {
+                            // === MENU DÀNH CHO ADMIN ===
+                            <li class="nav-item">
+                                <a class="nav-link fw-bold text-danger" href="@Url.Action("Index", "Products")"><i class="fas fa-boxes"></i> QL Sản phẩm</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link fw-bold text-danger" href="@Url.Action("Index", "Orders")"><i class="fas fa-file-invoice-dollar"></i> QL Đơn hàng</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-bold text-danger" href="#" data-bs-toggle="dropdown">
+                                    <i class="fas fa-tools"></i> Quản trị
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Danh mục", "Index", "Categories", null, new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Khách hàng", "Index", "Customers", null, new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Tài xế", "Index", "DeliveryDrivers", null, new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Khuyến mãi", "Index", "Promotions", null, new { @class = "dropdown-item" })</li>
+                                    <li>@Html.ActionLink("Đánh giá", "Index", "Reviews", null, new { @class = "dropdown-item" })</li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            // === MENU DÀNH CHO KHÁCH HÀNG / GUEST ===
+                            <li class="nav-item">
+                                @Html.ActionLink("Trang chủ", "Index", "Home", null, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("Thực đơn", "Index", "Products", null, new { @class = "nav-link" })
+                            </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("Tra cứu đơn hàng", "Index", "Orders", null, new { @class = "nav-link" }) <!-- Khách xem đơn của mình -->
+                            </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("Trang đánh giá", "Index", "Reviews", null, new { @class = "nav-link" })
+                            </li>
+                        }
+
+                    </ul>
+
+                    <!-- ================= RIGHT USER INFO ================= -->
+                    <ul class="navbar-nav ms-auto align-items-center">
+
+                        <!-- 1. Hiển thị Giỏ hàng (Chỉ hiện cho Khách, Admin không cần mua) -->
+                        @if (Session["AdminID"] == null)
+                        {
+                            <li class="nav-item me-3 position-relative">
+                                <a class="nav-link text-dark" href="@Url.Action("Index", "Cart")">
+                                    <i class="fas fa-shopping-cart fa-lg"></i>
+                                    @if (Session["Cart"] != null)
+                                    {
+                                        var cart = Session["Cart"] as List<_2001230507_NhanTuManh_B2.Models.CartItem>;
+                                        if (cart != null && cart.Count > 0)
+                                        {
+                                            <span class="badge rounded-pill bg-danger badge-cart">@cart.Sum(x => x.Quantity)</span>
+                                        }
+                                    }
+                                </a>
+                            </li>
+                        }
+
+                        <!-- 2. Logic Tài khoản -->
+                        @if (Session["AdminID"] != null)
+                        {
+                            // --- ADMIN ĐANG ĐĂNG NHẬP ---
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-danger fw-bold" href="#" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user-shield"></i> Xin chào, Quản trị viên
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#">Cấu hình hệ thống</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="@Url.Action("Logout", "Admin")"><i class="fas fa-sign-out-alt"></i> Đăng xuất Admin</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else if (Session["CustomerID"] != null)
+                        {
+                            // --- KHÁCH HÀNG ĐANG ĐĂNG NHẬP ---
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-primary fw-bold" href="#" data-bs-toggle="dropdown">
+                                    <i class="fas fa-user"></i> Xin chào, @Session["FullName"]
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="@Url.Action("Details", "Customers", new { id = Session["CustomerID"] })">Thông tin cá nhân</a></li>
+                                    <li><a class="dropdown-item" href="#">Lịch sử mua hàng</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="@Url.Action("Logout", "Account")"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            // --- CHƯA ĐĂNG NHẬP ---
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Register", "Account")">Đăng ký</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary text-black px-4 ms-2 rounded-pill" href="@Url.Action("Login", "Account")">
+                                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- BODY -->
+    <main class="container py-4" style="min-height: 60vh;">
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer text-muted">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5><i class="fas fa-utensils text-danger"></i> FastFeast</h5>
+                    <p>Hệ thống quản lý đặt đồ ăn nhanh trực tuyến.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Liên kết nhanh</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-decoration-none text-secondary">Về chúng tôi</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Thực đơn</a></li>
+                        <li><a href="#" class="text-decoration-none text-secondary">Khuyến mãi</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>Liên hệ</h6>
+                    <p>
+                        <i class="fas fa-phone"></i> 1900-xxxx<br />
+                        <i class="fas fa-envelope"></i> support@fastfeast.com
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-secondary"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-secondary"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-secondary"><i class="fab fa-youtube fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="d-flex justify-content-between align-items-center">
+                <span>&copy; @DateTime.Now.Year - FastFeast. All rights reserved.</span>
+                <small><a href="@Url.Action("Login", "Admin")" class="text-decoration-none text-muted">Admin Login</a></small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/js/admin.js"></script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

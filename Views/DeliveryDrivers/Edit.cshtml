@@ -1,0 +1,114 @@
+﻿@model _2001230507_NhanTuManh_B2.Models.DeliveryDriver
+
+@{
+    ViewBag.Title = "Cập nhật thông tin tài xế";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4 admin-container">
+    <h1 class="text-gradient mb-4">
+        <i class="fas fa-user-edit"></i> @ViewBag.Title
+    </h1>
+
+    <div class="admin-form">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.DriverID)
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                    <div class="row">
+                        <!-- Cột Trái: Thông tin cá nhân -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3 text-primary"><i class="fas fa-user-circle"></i> Thông tin cá nhân</h5>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    @Html.LabelFor(model => model.LastName, "Họ đệm", new { @class = "form-label fw-bold" })
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger small" })
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    @Html.LabelFor(model => model.FirstName, "Tên", new { @class = "form-label fw-bold" })
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                @Html.LabelFor(model => model.PhoneNumber, "Số điện thoại", new { @class = "form-label fw-bold" })
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-phone"></i></span>
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger small" })
+                            </div>
+
+                            <div class="mb-3">
+                                @Html.LabelFor(model => model.Email, "Email", new { @class = "form-label fw-bold" })
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-envelope"></i></span>
+                                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", type = "email" } })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+
+                        <!-- Cột Phải: Thông tin xe & Trạng thái -->
+                        <div class="col-md-6">
+                            <h5 class="mb-3 text-success"><i class="fas fa-motorcycle"></i> Phương tiện & Công việc</h5>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    @Html.LabelFor(model => model.VehicleType, "Loại xe", new { @class = "form-label fw-bold" })
+                                    @Html.EditorFor(model => model.VehicleType, new { htmlAttributes = new { @class = "form-control", placeholder = "VD: Xe máy, Ô tô..." } })
+                                    @Html.ValidationMessageFor(model => model.VehicleType, "", new { @class = "text-danger small" })
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    @Html.LabelFor(model => model.LicensePlate, "Biển số xe", new { @class = "form-label fw-bold" })
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fas fa-id-card-alt"></i></span>
+                                        @Html.EditorFor(model => model.LicensePlate, new { htmlAttributes = new { @class = "form-control text-uppercase" } })
+                                    </div>
+                                    @Html.ValidationMessageFor(model => model.LicensePlate, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                @Html.LabelFor(model => model.CurrentLocation, "Vị trí hiện tại", new { @class = "form-label fw-bold" })
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-map-marker-alt"></i></span>
+                                    @Html.EditorFor(model => model.CurrentLocation, new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                            </div>
+
+                            <!-- PHẦN ĐÃ SỬA LỖI -->
+                            <div class="mb-3 p-3 bg-light rounded border">
+                                <label class="form-label fw-bold d-block mb-2">Trạng thái hoạt động</label>
+                                <div class="form-check form-switch">
+                                    @Html.CheckBox("IsAvailable", Model.IsAvailable.GetValueOrDefault(), new { @class = "form-check-input", role = "switch", id = "isAvailableSwitch" })
+                                    <label class="form-check-label ms-2" for="isAvailableSwitch">
+                                        Đang sẵn sàng nhận đơn
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-3">
+                        <a href="@Url.Action("Index")" class="btn btn-secondary px-4">
+                            <i class="fas fa-arrow-left me-2"></i>Hủy
+                        </a>
+                        <button type="submit" class="btn btn-warning px-4">
+                            <i class="fas fa-save me-2"></i>Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

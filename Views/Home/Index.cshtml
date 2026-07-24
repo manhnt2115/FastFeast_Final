@@ -1,0 +1,264 @@
+﻿@model IEnumerable<_2001230507_NhanTuManh_B2.Models.Product>
+
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var categories = ViewBag.Categories as List<_2001230507_NhanTuManh_B2.Models.Category>;
+}
+
+@section styles {
+    <!-- CSS riêng của Template -->
+    <link rel="stylesheet" href="~/Content/css/style.css?v=3">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet" />
+    <style>
+        /* CSS chỉnh sửa nhỏ để ảnh sản phẩm đều nhau */
+        .box .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Hoặc cover nếu muốn cắt ảnh */
+            max-height: 160px;
+        }
+
+        .filters_menu li {
+            cursor: pointer;
+        }
+    </style>
+}
+
+<div class="hero_area">
+    <div class="bg-box">
+        <img src="~/Content/images/hero-bg.jpg" alt="Background">
+    </div>
+
+    <!-- SLIDER SECTION -->
+    <section class="slider_section">
+        <div id="customCarousel1" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-7 col-lg-6">
+                                <div class="detail-box">
+                                    <h1>FastFeast Restaurant</h1>
+                                    <p>
+                                        Thưởng thức ẩm thực tuyệt vời ngay tại nhà. Chúng tôi cam kết mang đến những món ăn nóng hổi, vệ sinh và hương vị khó quên.
+                                    </p>
+                                    <div class="btn-box">
+                                        <a href="@Url.Action("Index", "Products")" class="btn1">
+                                            Đặt món ngay
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-7 col-lg-6">
+                                <div class="detail-box">
+                                    <h1>Giao hàng siêu tốc</h1>
+                                    <p>
+                                        Đội ngũ tài xế chuyên nghiệp của chúng tôi luôn sẵn sàng giao món ăn yêu thích đến tận cửa nhà bạn trong thời gian ngắn nhất.
+                                    </p>
+                                    <div class="btn-box">
+                                        <a href="@Url.Action("Index", "Products")" class="btn1">
+                                            Xem thực đơn
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <ol class="carousel-indicators">
+                    <li data-bs-target="#customCarousel1" data-bs-slide-to="0" class="active"></li>
+                    <li data-bs-target="#customCarousel1" data-bs-slide-to="1"></li>
+                </ol>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- OFFER SECTION (KHUYẾN MÃI) -->
+<section class="offer_section layout_padding-bottom mt-5">
+    <div class="offer_container">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="img-box">
+                            <img src="~/Content/images/o1.jpg" alt="">
+                        </div>
+                        <div class="detail-box">
+                            <h5>ĐẠI TIỆC THỨ 5</h5>
+                            <h6><span>20%</span> Off</h6>
+                            <a href="@Url.Action("Index", "Promotions")" class="btn btn-sm btn-warning rounded-pill text-white mt-2">
+                                Xem mã <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="img-box">
+                            <img src="~/Content/images/o2.jpg" alt="">
+                        </div>
+                        <div class="detail-box">
+                            <h5>NGÀY PIZZA</h5>
+                            <h6><span>15%</span> Off</h6>
+                            <a href="@Url.Action("Index", "Promotions")" class="btn btn-sm btn-warning rounded-pill text-white mt-2">
+                                Xem mã <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MENU SECTION (PHẦN CHÍNH) -->
+<section class="food_section layout_padding-bottom">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>Thực Đơn Của Chúng Tôi</h2>
+        </div>
+
+        <!-- Bộ lọc danh mục (Dựa trên ViewBag.Categories) -->
+        <ul class="filters_menu">
+            <li class="active" data-filter="*">Tất cả</li>
+            @if (categories != null)
+            {
+                foreach (var cat in categories)
+                {
+                    // Tạo class lọc dạng .cat-1, .cat-2
+                    <li data-filter=".cat-@cat.CategoryID">@cat.CategoryName</li>
+                }
+            }
+        </ul>
+
+        <div class="filters-content">
+            <div class="row grid">
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        // Thêm class cat-ID vào đây để khớp với bộ lọc
+                        <div class="col-sm-6 col-lg-4 all cat-@item.CategoryID">
+                            <div class="box">
+                                <div>
+                                    <div class="img-box">
+                                        <!-- Xử lý đường dẫn ảnh có dấu ~ -->
+                                        <img src="@Url.Content(item.ImageURL ?? "~/Content/images/no-image.png")" alt="@item.ProductName" />
+                                    </div>
+                                    <div class="detail-box">
+                                        <h5>@item.ProductName</h5>
+                                        <p>
+                                            @if (!string.IsNullOrEmpty(item.Description) && item.Description.Length > 50)
+                                            {
+                                                @item.Description.Substring(0, 50)<span>...</span>
+                                            }
+                                            else
+                                            {
+                                                @item.Description
+                                            }
+                                        </p>
+                                        <div class="options">
+                                            <!-- Hiển thị giá tiền -->
+                                            <h6>@item.Price.ToString("N0") VNĐ</h6>
+
+                                            <!-- Nút Thêm vào giỏ (Dẫn tới CartController) -->
+                                            <a href="@Url.Action("AddToCart", "Cart", new { productId = item.ProductID })" class="cart_link text-white bg-warning">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </a>
+
+                                            <!-- Nút Xem chi tiết -->
+                                            <a href="@Url.Action("Details", "Products", new { id = item.ProductID })" class="cart_link text-white bg-info ml-2" style="border-radius: 50%;">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center">
+                        <p>Đang cập nhật thực đơn...</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="btn-box">
+            <a href="@Url.Action("Index", "Products")">
+                Xem toàn bộ thực đơn
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section class="client_section about_section layout_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 box">
+                <div class="img-box">
+                    <img src="~/Content/images/about-img.png" alt="" class="img-fluid" />
+                </div>
+            </div>
+            <div class="col-md-6 box">
+                <div class="detail-box">
+                    <div class="heading_container">
+                        <h2>Chúng tôi là FastFeast</h2>
+                    </div>
+                    <p>
+                        FastFeast là đối tác tin cậy của hàng ngàn nhà hàng và quán ăn. Chúng tôi giúp bạn quản lý đơn hàng, tối ưu vận chuyển và mang đến trải nghiệm tốt nhất cho khách hàng.
+                    </p>
+                    <a href="@Url.Action("About", "Home")">
+                        Đọc thêm
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <!-- Import thư viện JS cần thiết -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="~/Content/js/custom.js"></script>
+
+    <script>
+        // Kích hoạt Isotope Filter
+        $(window).on('load', function () {
+            // Sự kiện click vào menu lọc
+            $('.filters_menu li').click(function () {
+                $('.filters_menu li').removeClass('active');
+                $(this).addClass('active');
+
+                var data = $(this).attr('data-filter');
+                $grid.isotope({
+                    filter: data
+                })
+            });
+
+            // Khởi tạo Grid
+            var $grid = $(".grid").isotope({
+                itemSelector: ".all",
+                percentPosition: false,
+                masonry: {
+                    columnWidth: ".all"
+                }
+            });
+        });
+    </script>
+}

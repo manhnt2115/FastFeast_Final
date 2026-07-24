@@ -1,0 +1,272 @@
+﻿@{
+    ViewBag.Title = "Menu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<body class="sub_page">
+    <!-- food section -->
+    <section class="food_section layout_padding-bottom">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h2>
+                    Thực Đơn Của Chúng Tôi
+                </h2>
+            </div>
+
+            <ul class="filters_menu">
+                <li class="active" data-filter="*">Tất Cả</li>
+                <li data-filter=".burger">Bánh Mì Kẹp Thịt</li>
+                <li data-filter=".pizza">Pizza</li>
+                <li data-filter=".pasta">Mì Ống</li>
+                <li data-filter=".fries">Khoai Tây Chiên</li>
+            </ul>
+
+            <div class="filters-content">
+                <div class="row grid">
+                    <div class="col-sm-6 col-lg-4 all pizza">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f1.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Pizza Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            200.000 VNĐ
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all burger">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f2.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Bánh Mì Kẹp Thịt Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            150.000 VNĐ
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all pizza">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f3.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Pizza Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            170.000 VND
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all pasta">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f4.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Mì Ống Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            180.000 VND
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all fries">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f5.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Khoai Tây Chiên
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            100.000 VND
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all pizza">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f6.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Pizza Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            150.000 VND
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all burger">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f7.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Bánh Mì Kẹp Thịt Thơm Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            120.000đ
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all burger">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f8.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Bánh Mì Kẹp Thịt Thơm Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            60.000 VND
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4 all pasta">
+                        <div class="box">
+                            <div>
+                                <div class="img-box">
+                                    <img src="~/Content/images/f9.png" />
+                                </div>
+                                <div class="detail-box">
+                                    <h5>
+                                        Mì Ống Ngon
+                                    </h5>
+                                    <p>
+                                        mô tả của sản phẩm
+                                    </p>
+                                    <div class="options">
+                                        <h6>
+                                            75.000 VND
+                                        </h6>
+                                        <a class="cart_link" href="#">
+                                            <img src="~/Content/images/cart_icon.png" alt="Giỏ Hàng" style="width: 24px; height: 24px;">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="btn-box">
+                <a href="">
+                    Xem Thêm
+                </a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+

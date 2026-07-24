@@ -1,0 +1,34 @@
+﻿@* ==========================================
+    Views/Promotions/Delete.cshtml
+    ========================================== *@
+@model _2001230507_NhanTuManh_B2.Models.Promotion
+
+@{
+    ViewBag.Title = "Xóa khuyến mãi";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+    <div class="alert alert-danger">
+        <h4>Bạn có chắc chắn muốn xóa khuyến mãi này?</h4>
+    </div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">Mã:</dt>
+        <dd class="col-sm-8"><strong>@Model.PromotionCode</strong></dd>
+
+        <dt class="col-sm-4">Giá trị:</dt>
+        <dd class="col-sm-8">@Model.DiscountValue @(Model.DiscountType == "Percentage" ? "%" : "VNĐ")</dd>
+
+        <dt class="col-sm-4">Đã sử dụng:</dt>
+        <dd class="col-sm-8"><span class="badge bg-info">@Model.UsedCount lần</span></dd>
+    </dl>
+
+    @using (Html.BeginForm("Delete", "Promotions", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.PromotionID)
+        <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+        @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+    }
+</div>

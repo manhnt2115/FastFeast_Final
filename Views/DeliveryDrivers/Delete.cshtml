@@ -1,0 +1,55 @@
+﻿@* ==========================================
+    Views/DeliveryDrivers/Delete.cshtml
+    ========================================== *@
+@model _2001230507_NhanTuManh_B2.Models.DeliveryDriver
+
+@{
+    ViewBag.Title = "Xóa tài xế";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+
+    <div class="alert alert-danger">
+        <h4>Bạn có chắc chắn muốn xóa tài xế này?</h4>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Họ tên:</dt>
+                <dd class="col-sm-8">@Model.FirstName @Model.LastName</dd>
+
+                <dt class="col-sm-4">Số điện thoại:</dt>
+                <dd class="col-sm-8">@Model.PhoneNumber</dd>
+
+                <dt class="col-sm-4">Email:</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+
+                <dt class="col-sm-4">Số đơn giao:</dt>
+                <dd class="col-sm-8">
+                    <span class="badge bg-warning">@(Model.Deliveries != null ? Model.Deliveries.Count : 0) đơn</span>
+                </dd>
+            </dl>
+
+            @if (Model.Deliveries != null && Model.Deliveries.Any())
+            {
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Cảnh báo: Tài xế này có @Model.Deliveries.Count đơn giao hàng. Xóa tài xế có thể ảnh hưởng đến dữ liệu giao hàng.
+                </div>
+            }
+
+            @using (Html.BeginForm("Delete", "DeliveryDrivers", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.DriverID)
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Xác nhận xóa
+                </button>
+                @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+            }
+        </div>
+    </div>
+</div>

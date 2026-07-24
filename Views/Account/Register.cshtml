@@ -1,0 +1,83 @@
+﻿@model _2001230507_NhanTuManh_B2.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="font-weight-light my-1"><i class="fas fa-user-plus"></i> Đăng ký thành viên</h3>
+                </div>
+                <div class="card-body p-4">
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Họ" } })
+                                    @Html.LabelFor(model => model.LastName)
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Tên" } })
+                                    @Html.LabelFor(model => model.FirstName)
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "name@example.com" } })
+                            @Html.LabelFor(model => model.Email)
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control", placeholder = "SĐT" } })
+                            @Html.LabelFor(model => model.PhoneNumber)
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger small" })
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Mật khẩu" } })
+                                    @Html.LabelFor(model => model.Password)
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", placeholder = "Xác nhận mật khẩu" } })
+                                    @Html.LabelFor(model => model.ConfirmPassword)
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 mb-0">
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-block btn-lg">
+                                    <i class="fas fa-check-circle"></i> Tạo tài khoản
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">
+                        <a href="@Url.Action("Login")" class="text-decoration-none">Bạn đã có tài khoản? Đăng nhập ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

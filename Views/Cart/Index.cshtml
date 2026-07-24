@@ -1,0 +1,155 @@
+﻿@model _2001230507_NhanTuManh_B2.Models.CartViewModel
+
+@{
+    ViewBag.Title = "Giỏ hàng của bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4"><i class="fas fa-shopping-cart text-primary"></i> Giỏ hàng</h2>
+
+    @if (Model.Items == null || !Model.Items.Any())
+    {
+        <div class="alert alert-info text-center py-5">
+            <i class="fas fa-shopping-basket fa-3x mb-3"></i>
+            <h4>Giỏ hàng của bạn đang trống!</h4>
+            <a href="@Url.Action("Index", "Products")" class="btn btn-primary mt-3">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- CỘT TRÁI: DANH SÁCH SẢN PHẨM -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th style="width: 40%">Sản phẩm</th>
+                                        <th style="width: 20%">Giá</th>
+                                        <th style="width: 20%">Số lượng</th>
+                                        <th style="width: 20%" class="text-end">Thành tiền</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="@item.Product.ImageURL" alt="@item.Product.ProductName"
+                                                         class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                                    <div>
+                                                        <h6 class="mb-0">@item.Product.ProductName</h6>
+                                                        <small class="text-muted">@item.Product.Category.CategoryName</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>@item.Product.Price.ToString("N0") VNĐ</td>
+                                            <td>
+                                                <!-- Form cập nhật số lượng -->
+                                                @using (Html.BeginForm("UpdateQuantity", "Cart", FormMethod.Post, new { @class = "d-flex" }))
+                                                {
+                                                    @Html.Hidden("productId", item.Product.ProductID)
+                                                    <input type="number" name="quantity" value="@item.Quantity" min="1"
+                                                           class="form-control form-control-sm text-center me-2" style="width: 60px;">
+                                                    <button type="submit" class="btn btn-sm btn-light border" title="Cập nhật">
+                                                        <i class="fas fa-sync-alt"></i>
+                                                    </button>
+                                                }
+                                            </td>
+                                            <td class="text-end fw-bold">@item.TotalPrice.ToString("N0") VNĐ</td>
+                                            <td class="text-end">
+                                                <a href="@Url.Action("Remove", new { productId = item.Product.ProductID })"
+                                                   class="text-danger" title="Xóa" onclick="return confirm('Xóa sản phẩm này?');">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Index", "Products")" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Tiếp tục mua hàng
+                    </a>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: TỔNG TIỀN & MÃ GIẢM GIÁ -->
+            <div class="col-lg-4">
+                <!-- Box Mã Giảm Giá -->
+                <div class="card shadow-sm border-0 mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Mã khuyến mãi</h5>
+
+                        @if (TempData["PromoError"] != null)
+                        {
+                            <div class="alert alert-danger small py-2">@TempData["PromoError"]</div>
+                        }
+                        @if (TempData["PromoSuccess"] != null)
+                        {
+                            <div class="alert alert-success small py-2">@TempData["PromoSuccess"]</div>
+                        }
+
+                        @using (Html.BeginForm("ApplyPromotion", "Cart", FormMethod.Post))
+                        {
+                            <div class="input-group mt-2">
+                                <input type="text" name="promoCode" class="form-control text-uppercase"
+                                       placeholder="Nhập mã code..." value="@Model.AppliedPromoCode">
+                                <button class="btn btn-dark" type="submit">Áp dụng</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Box Tổng Kết -->
+                <div class="card shadow-sm border-0 bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title border-bottom pb-2">Tổng thanh toán</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tạm tính:</span>
+                            <span class="fw-bold">@Model.SubTotal.ToString("N0") VNĐ</span>
+                        </div>
+
+                        @if (Model.DiscountAmount > 0)
+                        {
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>Giảm giá (@Model.AppliedPromoCode):</span>
+                                <span>-@Model.DiscountAmount.ToString("N0") VNĐ</span>
+                            </div>
+                        }
+
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="h5">Tổng cộng:</span>
+                            <span class="h5 text-primary">@Model.GrandTotal.ToString("N0") VNĐ</span>
+                        </div>
+
+                        <!-- Nút Thanh Toán -->
+                        <div class="d-grid">
+                            @if (Session["CustomerID"] != null)
+                            {
+                                <a href="@Url.Action("Checkout", "Orders")" class="btn btn-success btn-lg">
+                                    Tiến hành thanh toán <i class="fas fa-arrow-right"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Login", "Account")" class="btn btn-warning btn-lg">
+                                    Đăng nhập để thanh toán
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

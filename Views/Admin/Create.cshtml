@@ -1,0 +1,59 @@
+﻿@* ==========================================
+    Views/Admins/Create.cshtml
+    ========================================== *@
+@model _2001230507_NhanTuManh_B2.Models.Admin
+
+@{
+    ViewBag.Title = "Thêm quản trị viên";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Create", "Admins", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Username, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.Username, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", type = "email" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.PasswordHash, new { @class = "form-label" })
+                    @Html.PasswordFor(model => model.PasswordHash, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PasswordHash, "", new { @class = "text-danger" })
+                    <small class="form-text text-muted">Mật khẩu sẽ được mã hóa tự động</small>
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Role, new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.Role, new SelectList(new[] {
+                        new { Value = "SuperAdmin", Text = "Super Admin" },
+                        new { Value = "OrderManager", Text = "Quản lý đơn hàng" },
+                        new { Value = "ProductManager", Text = "Quản lý sản phẩm" },
+                        new { Value = "CustomerService", Text = "Chăm sóc khách hàng" }
+                    }, "Value", "Text"), "-- Chọn vai trò --", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-secondary" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

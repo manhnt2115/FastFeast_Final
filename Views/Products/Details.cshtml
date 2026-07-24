@@ -1,0 +1,128 @@
+﻿@model _2001230507_NhanTuManh_B2.Models.Product
+@section styles {
+    <style>
+        /* CSS cho Star Rating Input */
+        .star-rating {
+            direction: rtl;
+            display: inline-flex;
+        }
+
+            .star-rating input {
+                display: none;
+            }
+
+            .star-rating label {
+                font-size: 1.5rem;
+                color: #ddd;
+                cursor: pointer;
+                padding: 0 5px;
+                transition: color 0.2s;
+            }
+                /* Khi hover hoặc check thì đổi màu vàng */
+                .star-rating input:checked ~ label,
+                .star-rating label:hover,
+                .star-rating label:hover ~ label {
+                    color: yellow;
+                }
+    </style>
+}
+<!-- ============================================== -->
+<!-- PHẦN ĐÁNH GIÁ SẢN PHẨM -->
+<!-- ============================================== -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white border-bottom-0">
+                <h4 class="mb-0"><i class="fas fa-comments text-warning"></i> Đánh giá & Bình luận</h4>
+            </div>
+            <div class="card-body">
+
+                <!-- 1. FORM VIẾT ĐÁNH GIÁ (Chỉ hiện khi đã đăng nhập) -->
+                @if (Session["CustomerID"] != null)
+                {
+                    <div class="mb-5 p-4 bg-light rounded border">
+                        <h5>Viết đánh giá của bạn</h5>
+                        @using (Html.BeginForm("Create", "Reviews", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ProductID" value="@Model.ProductID" />
+
+                            <!-- Chọn số sao (Star Rating CSS) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Bạn chấm mấy sao?</label>
+                                <div class="star-rating">
+                                    <input type="radio" id="star5" name="Rating" value="5" checked /><label for="star5" title="Tuyệt vời"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star4" name="Rating" value="4" /><label for="star4" title="Tốt"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star3" name="Rating" value="3" /><label for="star3" title="Bình thường"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star2" name="Rating" value="2" /><label for="star2" title="Tệ"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="star1" name="Rating" value="1" /><label for="star1" title="Rất tệ"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+
+                            <!-- Nhập nội dung -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nội dung đánh giá:</label>
+                                <textarea name="Comment" class="form-control" rows="3" placeholder="Chia sẻ cảm nhận của bạn về món ăn này..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-warning text-white">
+                                <i class="fas fa-paper-plane"></i> Gửi đánh giá
+                            </button>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        Vui lòng <a href="@Url.Action("Login", "Account")" class="fw-bold">Đăng nhập</a> để viết đánh giá cho sản phẩm này.
+                    </div>
+                }
+
+                <!-- 2. DANH SÁCH ĐÁNH GIÁ CŨ -->
+                <div class="review-list">
+                    @if (Model.Reviews != null && Model.Reviews.Any())
+                    {
+                        foreach (var review in Model.Reviews.OrderByDescending(r => r.ReviewDate))
+                        {
+                            <div class="d-flex mb-4 border-bottom pb-3">
+                                <div class="flex-shrink-0">
+                                    <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h6 class="mb-1 fw-bold">
+                                        @if (review.Customer != null)
+                                        {<span>@review.Customer.FirstName @review.Customer.LastName</span> }
+                                    else
+                                    { <span>Người dùng ẩn danh</span>}
+                                    </h6>
+
+                                    <div class="text-warning small mb-2">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= review.Rating)
+                                            {<i class="fas fa-star"></i> }
+                                            else
+                                            { <i class="far fa-star text-muted"></i>}
+                                        }
+                                        <span class="text-muted ms-2 fw-normal">@review.ReviewDate.Value.ToString("dd/MM/yyyy HH:mm")</span>
+                                    </div>
+
+                                    <p class="mb-0 text-secondary">
+                                        @review.Comment
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted py-3">Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá!</p>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

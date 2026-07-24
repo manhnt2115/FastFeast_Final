@@ -1,0 +1,66 @@
+﻿@* Views/Categories/Details.cshtml *@
+@model _2001230507_NhanTuManh_B2.Models.Category
+
+@{
+    ViewBag.Title = "Chi tiết danh mục";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Tên danh mục:</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryName)</dd>
+
+                        <dt class="col-sm-3">Mô tả:</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                        <dt class="col-sm-3">Số sản phẩm:</dt>
+                        <dd class="col-sm-9">
+                            <span class="badge bg-info">@(Model.Products != null ? Model.Products.Count : 0) sản phẩm</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h5>Sản phẩm trong danh mục</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @foreach (var product in Model.Products)
+                            {
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        @if (!string.IsNullOrEmpty(product.ImageURL))
+                                        {
+                                            <img src="@product.ImageURL" class="card-img-top" alt="@product.ProductName" style="height: 150px; object-fit: cover;">
+                                        }
+                                        <div class="card-body">
+                                            <h6 class="card-title">@product.ProductName</h6>
+                                            <p class="card-text">@product.Price.ToString("N0") VNĐ</p>
+                                            @Html.ActionLink("Xem chi tiết", "Details", "Products", new { id = product.ProductID }, new { @class = "btn btn-sm btn-primary" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="mt-3">
+                @Html.ActionLink("Sửa", "Edit", new { id = Model.CategoryID }, new { @class = "btn btn-warning" })
+                @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+    </div>
+</div>

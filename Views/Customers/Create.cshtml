@@ -1,0 +1,92 @@
+﻿@* Views/Customers/Create.cshtml *@
+@model _2001230507_NhanTuManh_B2.Models.Customer
+
+@{
+    ViewBag.Title = "Thêm khách hàng mới";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            @using (Html.BeginForm("Create", "Customers", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.FirstName, new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.LastName, new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", type = "email" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.PhoneNumber, new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.PasswordHash, new { @class = "form-label" })
+                    @Html.PasswordFor(model => model.PasswordHash, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.PasswordHash, "", new { @class = "text-danger" })
+                    <small class="form-text text-muted">Mật khẩu sẽ được mã hóa tự động</small>
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Address, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.City, new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.City, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.PostalCode, new { @class = "form-label" })
+                            @Html.TextBoxFor(model => model.PostalCode, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu
+                    </button>
+                    @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-secondary" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

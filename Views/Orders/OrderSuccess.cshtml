@@ -1,0 +1,24 @@
+﻿@model int?
+@{
+    ViewBag.Title = "Đặt hàng thành công";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container text-center mt-5 mb-5">
+    <div class="py-5">
+        <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+        <h2 class="mt-4">Đặt hàng thành công!</h2>
+
+        <p class="lead">
+            Mã đơn hàng của bạn là:
+            <strong>#@(Model.HasValue ? Model.Value.ToString() : "N/A")</strong>
+        </p>
+
+        <p>Cảm ơn bạn đã tin tưởng FastFeast. Chúng tôi sẽ liên hệ sớm nhất.</p>
+
+        <div class="mt-4">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Về trang chủ</a>
+            <a href="@Url.Action("Index", "Orders")" class="btn btn-outline-secondary">Xem đơn hàng</a>
+        </div>
+    </div>
+</div>

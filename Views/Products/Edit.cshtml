@@ -1,0 +1,72 @@
+﻿<!-- Views/Products/Edit.cshtml -->
+@model _2001230507_NhanTuManh_B2.Models.Product
+
+@{
+    ViewBag.Title = "Chỉnh sửa sản phẩm";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            @using (Html.BeginForm("Edit", "Products", FormMethod.Post))
+            {
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.ProductID)
+                @Html.HiddenFor(model => model.CreatedAt)
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.ProductName, "Tên sản phẩm", new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Description, "Mô tả", new { @class = "form-label" })
+                    @Html.TextAreaFor(model => model.Description, 4, 1, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.Price, "Giá", new { @class = "form-label" })
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control", type = "number", step = "0.01" } })
+                            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            @Html.LabelFor(model => model.CategoryID, "Danh mục", new { @class = "form-label" })
+                            @* Dùng DropDownListFor để hiển thị danh sách danh mục từ ViewBag *@
+                            @Html.DropDownListFor(model => model.CategoryID, (SelectList)ViewBag.CategoryID, "-- Chọn danh mục --", new { @class = "form-select" })
+                            @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.ImageURL, "URL Hình ảnh", new { @class = "form-label" })
+                    @Html.EditorFor(model => model.ImageURL, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ImageURL, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.IsAvailable, "Trạng thái", new { @class = "form-label" })
+                    @Html.EditorFor(model => model.IsAvailable, new { htmlAttributes = new { @class = "form-select" } })
+                    @Html.ValidationMessageFor(model => model.IsAvailable, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Cập nhật
+                    </button>
+                    @Html.ActionLink(" Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

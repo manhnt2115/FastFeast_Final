@@ -1,0 +1,58 @@
+﻿@model _2001230507_NhanTuManh_B2.Models.ContactModel
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="contact_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>Liên hệ & Góp ý</h2>
+            <p>Chúng tôi luôn lắng nghe mọi phản hồi từ bạn để cải thiện dịch vụ.</p>
+        </div>
+        @Scripts.Render("~/bundles/jquery")
+        <div class="row">
+            <div class="col-md-6">
+                @using (Html.BeginForm("Index", "Contact", FormMethod.Post))
+                {
+                    <div class="form_container">
+                        <div>
+                            @Html.TextBoxFor(m => m.HoTen, new { @class = "form-control", placeholder = "Họ và Tên" })
+                            @Html.ValidationMessageFor(m => m.HoTen)
+                        </div>
+
+                        <div>
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+
+                        <div>
+                            @Html.TextBoxFor(m => m.SoDienThoai, new { @class = "form-control", placeholder = "Số điện thoại" })
+                            @Html.ValidationMessageFor(m => m.SoDienThoai)
+                        </div>
+
+                        <div>
+                            @Html.DropDownListFor(m => m.ChuDe, new SelectList(new[]
+                            {
+                                new { Value = "Góp ý dịch vụ", Text = "Góp ý dịch vụ" },
+                                new { Value = "Báo lỗi hệ thống", Text = "Báo lỗi hệ thống" },
+                                new { Value = "Hỗ trợ đơn hàng", Text = "Hỗ trợ đơn hàng" },
+                                new { Value = "Khác", Text = "Khác" }
+                            }, "Value", "Text"), "-- Chọn chủ đề --", new { @class = "form-control nice-select wide" })
+                            @Html.ValidationMessageFor(m => m.ChuDe)
+                        </div>
+
+                        <div>
+                            @Html.TextAreaFor(m => m.NoiDung, 5, 40, new { @class = "form-control", placeholder = "Nhập nội dung góp ý của bạn..." })
+                            @Html.ValidationMessageFor(m => m.NoiDung)
+                        </div>
+
+                        <div class="btn_box mt-3">
+                            <button type="submit" class="btn_send">Gửi góp ý</button>
+                        </div>
+                    </div>
+                 }
+            </div>
+        </div>
+    </div>
+</section>

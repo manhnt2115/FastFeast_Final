@@ -1,0 +1,50 @@
+﻿@* Views/Categories/Delete.cshtml *@
+@model _2001230507_NhanTuManh_B2.Models.Category
+
+@{
+    ViewBag.Title = "Xóa danh mục";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+
+    <div class="alert alert-danger">
+        <h4>Bạn có chắc chắn muốn xóa danh mục này?</h4>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Tên danh mục:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.CategoryName)</dd>
+
+                <dt class="col-sm-4">Mô tả:</dt>
+                <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-4">Số sản phẩm:</dt>
+                <dd class="col-sm-8">
+                    <span class="badge bg-warning">@(Model.Products != null ? Model.Products.Count : 0) sản phẩm</span>
+                </dd>
+            </dl>
+
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Cảnh báo: Danh mục này có @Model.Products.Count sản phẩm. Xóa danh mục có thể ảnh hưởng đến các sản phẩm này.
+                </div>
+            }
+
+            @using (Html.BeginForm("Delete", "Categories", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.CategoryID)
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Xác nhận xóa
+                </button>
+                @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+            }
+        </div>
+    </div>
+</div>

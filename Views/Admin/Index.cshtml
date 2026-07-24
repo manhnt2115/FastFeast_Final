@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1>Admin Dashboard</h1>
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.ActionLink("Quản lý Sản phẩm", "Index", "Products", null, new { @class = "btn btn-primary btn-lg w-100 mb-3" })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("Quản lý Đơn hàng", "Index", "Orders", null, new { @class = "btn btn-success btn-lg w-100 mb-3" })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("Quản lý Khách hàng", "Index", "Customers", null, new { @class = "btn btn-info btn-lg w-100 mb-3" })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("Quản lý Khuyến mãi", "Index", "Promotions", null, new { @class = "btn btn-warning btn-lg w-100 mb-3" })
+        </div>
+    </div>
+</div>

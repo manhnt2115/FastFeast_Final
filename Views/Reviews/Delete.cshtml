@@ -1,0 +1,42 @@
+﻿@* ==========================================
+    Views/Reviews/Delete.cshtml
+    ========================================== *@
+@model _2001230507_NhanTuManh_B2.Models.Review
+
+@{
+    ViewBag.Title = "Xóa đánh giá";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+    <div class="alert alert-danger">
+        <h4>Bạn có chắc chắn muốn xóa đánh giá này?</h4>
+    </div>
+    <hr />
+    <div class="card">
+        <div class="card-header">
+            <strong>@Model.Customer.FirstName @Model.Customer.LastName</strong>
+            -
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= Model.Rating)
+                {
+                    <i class="fas fa-star text-warning"></i>
+                }
+            }
+        </div>
+        <div class="card-body">
+            <p>@Model.Comment</p>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Delete", "Reviews", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ReviewID)
+        <div class="mt-3">
+            <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+            @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+</div>

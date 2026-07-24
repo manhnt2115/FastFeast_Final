@@ -1,0 +1,69 @@
+﻿@* ==========================================
+    Views/Admins/Delete.cshtml
+    ========================================== *@
+@model _2001230507_NhanTuManh_B2.Models.Admin
+
+@{
+    ViewBag.Title = "Xóa quản trị viên";
+}
+
+<div class="container mt-4">
+    <h1>@ViewBag.Title</h1>
+
+    <div class="alert alert-danger">
+        <h4>Bạn có chắc chắn muốn xóa quản trị viên này?</h4>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row">
+                <dt class="col-sm-4">Tên đăng nhập:</dt>
+                <dd class="col-sm-8"><strong>@Model.Username</strong></dd>
+
+                <dt class="col-sm-4">Email:</dt>
+                <dd class="col-sm-8">@Model.Email</dd>
+
+                <dt class="col-sm-4">Vai trò:</dt>
+                <dd class="col-sm-8">
+                    @switch (Model.Role)
+                    {
+                        case "SuperAdmin":
+                            <span class="badge bg-danger">Super Admin</span>
+                            break;
+                        case "OrderManager":
+                            <span class="badge bg-primary">Quản lý đơn hàng</span>
+                            break;
+                        case "ProductManager":
+                            <span class="badge bg-success">Quản lý sản phẩm</span>
+                            break;
+                        default:
+                            <span class="badge bg-secondary">@Model.Role</span>
+                            break;
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Ngày tạo:</dt>
+                <dd class="col-sm-8">@Model.CreatedAt.ToString("dd/MM/yyyy")</dd>
+            </dl>
+
+            @if (Model.Role == "SuperAdmin")
+            {
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Cảnh báo:</strong> Đây là tài khoản Super Admin. Hãy cẩn thận khi xóa!
+                </div>
+            }
+
+            @using (Html.BeginForm("Delete", "Admins", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.AdminID)
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Xác nhận xóa
+                </button>
+                @Html.ActionLink("Hủy", "Index", null, new { @class = "btn btn-secondary" })
+            }
+        </div>
+    </div>
+</div>

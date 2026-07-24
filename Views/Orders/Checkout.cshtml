@@ -1,0 +1,182 @@
+﻿@model _2001230507_NhanTuManh_B2.Models.Order
+
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var cartItems = ViewBag.CartItems as List<_2001230507_NhanTuManh_B2.Models.CartItem>;
+    decimal totalAmount = ViewBag.TotalAmount;
+}
+
+<div class="container mt-4 mb-5">
+    <h2 class="text-gradient mb-4"><i class="fas fa-check-circle"></i> Xác nhận thanh toán</h2>
+
+    @using (Html.BeginForm("Checkout", "Orders", FormMethod.Post, new { id = "checkoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="row">
+            <!-- CỘT TRÁI: THÔNG TIN GIAO HÀNG & PHƯƠNG THỨC TT -->
+            <div class="col-md-7">
+
+                <!-- 1. Thông tin giao hàng -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0 text-primary"><i class="fas fa-map-marker-alt"></i> Thông tin giao hàng</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.ShippingAddress, "Địa chỉ nhận hàng", new { @class = "form-label fw-bold" })
+                            @Html.EditorFor(m => m.ShippingAddress, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                @Html.LabelFor(m => m.ShippingCity, "Thành phố", new { @class = "form-label fw-bold" })
+                                @Html.EditorFor(m => m.ShippingCity, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                @Html.LabelFor(m => m.ShippingPostalCode, "Mã bưu điện", new { @class = "form-label fw-bold" })
+                                @Html.EditorFor(m => m.ShippingPostalCode, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Notes, "Ghi chú cho tài xế/bếp", new { @class = "form-label fw-bold" })
+                            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control", rows = "2", placeholder = "Ví dụ: Không cay, gọi trước khi giao..." })
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Phương thức thanh toán -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0 text-success"><i class="fas fa-wallet"></i> Phương thức thanh toán</h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Chọn Tiền mặt -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="PaymentMethod" id="paymentCash" value="COD" checked>
+                            <label class="form-check-label fw-bold" for="paymentCash">
+                                <i class="fas fa-money-bill-wave text-success"></i> Thanh toán khi nhận hàng (COD)
+                            </label>
+                        </div>
+
+                        <!-- Chọn Chuyển khoản -->
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="radio" name="PaymentMethod" id="paymentTransfer" value="BankTransfer">
+                            <label class="form-check-label fw-bold" for="paymentTransfer">
+                                <i class="fas fa-university text-primary"></i> Chuyển khoản ngân hàng (Quét mã QR)
+                            </label>
+                        </div>
+
+                        <!-- Khu vực hiển thị QR Code (Mặc định ẩn) -->
+                        <div id="bankTransferSection" class="mt-3 p-3 bg-light rounded border" style="display:none;">
+                            <p class="mb-2">Vui lòng chọn ngân hàng để lấy mã QR:</p>
+
+                            <select id="bankSelect" class="form-select mb-3">
+                                <option value="">-- Chọn ngân hàng --</option>
+                                <option value="MB">MB Bank (Quân Đội)</option>
+                                <option value="VCB">Vietcombank</option>
+                                <option value="ACB">ACB (Á Châu)</option>
+                                <option value="ICB">VietinBank</option>
+                                <option value="BIDV">BIDV</option>
+                                <option value="TPB">TPBank</option>
+                                <option value="MOMO">MOMO</option>
+                            </select>
+
+                            <!-- Chỗ hiển thị ảnh QR -->
+                            <div id="qrContainer" class="text-center" style="display:none;">
+                                <h6 class="text-danger fw-bold">Quét mã để thanh toán: @totalAmount.ToString("N0") VNĐ</h6>
+                                <img id="qrImage" src="" alt="QR Code" class="img-fluid border rounded shadow-sm" style="max-width: 250px;" />
+                                <p class="small text-muted mt-2">
+                                    Nội dung CK: <strong id="qrContent"></strong><br />
+                                    Tự động xác nhận sau khi chuyển khoản.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CỘT PHẢI: TỔNG KẾT ĐƠN HÀNG -->
+            <div class="col-md-5">
+                <div class="card shadow-sm border-0 bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title border-bottom pb-3">Đơn hàng của bạn</h5>
+
+                        @foreach (var item in cartItems)
+                        {
+                            <div class="d-flex justify-content-between mb-2 small">
+                                <span>@item.Product.ProductName x <strong>@item.Quantity</strong></span>
+                                <span>@item.TotalPrice.ToString("N0") đ</span>
+                            </div>
+                        }
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Tạm tính:</span>
+                            <span>@ViewBag.SubTotal.ToString("N0") đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1 text-success">
+                            <span>Giảm giá:</span>
+                            <span>-@ViewBag.Discount.ToString("N0") đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between mt-3">
+                            <span class="h5">Tổng cộng:</span>
+                            <span class="h4 text-danger fw-bold">@totalAmount.ToString("N0") VNĐ</span>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                Đặt hàng ngay <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <a href="@Url.Action("Index", "Cart")" class="d-block text-center mt-3 text-decoration-none">
+                            <i class="fas fa-arrow-left"></i> Quay lại giỏ hàng
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // === CẤU HÌNH THÔNG TIN TÀI KHOẢN CỦA BẠN ===
+            const MY_ACCOUNT_NUMBER = "0352585257"; // Thay số tài khoản của bạn vào đây
+            const MY_ACCOUNT_NAME = "FASTFEAST"; // Tên chủ tài khoản (Không dấu)
+            const ORDER_TOTAL = @totalAmount; // Lấy tổng tiền từ Server
+            const CONTENT = "THANHTOAN DONHANG"; // Nội dung chuyển khoản mặc định
+
+            // 1. Xử lý ẩn hiện khu vực QR
+            $('input[name="PaymentMethod"]').change(function () {
+                if ($('#paymentTransfer').is(':checked')) {
+                    $('#bankTransferSection').slideDown();
+                } else {
+                    $('#bankTransferSection').slideUp();
+                }
+            });
+
+            // 2. Xử lý khi chọn Ngân hàng -> Tạo Link QR
+            $('#bankSelect').change(function () {
+                var bankId = $(this).val(); // Ví dụ: MB, VCB...
+
+                if (bankId) {
+                    // Sử dụng dịch vụ VietQR (img.vietqr.io)
+                    // Format: https://img.vietqr.io/image/{BANK_ID}-{ACCOUNT_NO}-compact.png?amount={AMOUNT}&addInfo={CONTENT}&accountName={NAME}
+
+                    var qrUrl = `https://img.vietqr.io/image/${bankId}-${MY_ACCOUNT_NUMBER}-compact.png?amount=${ORDER_TOTAL}&addInfo=${CONTENT}&accountName=${encodeURIComponent(MY_ACCOUNT_NAME)}`;
+
+                    // Cập nhật ảnh và hiển thị
+                    $('#qrImage').attr('src', qrUrl);
+                    $('#qrContent').text(CONTENT);
+                    $('#qrContainer').fadeIn();
+                } else {
+                    $('#qrContainer').hide();
+                }
+            });
+        });
+    </script>
+}
