@@ -1,0 +1,549 @@
+﻿/* ============================================
+   Content/css/admin.css
+   CSS cho Admin Panel - KHÔNG ảnh hưởng trang chủ
+   ============================================ */
+
+/* ============================================
+   VARIABLES & RESET
+   ============================================ */
+:root {
+    --primary-color: #ff6b35;
+    --secondary-color: #f7931e;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --dark-color: #343a40;
+    --light-color: #f8f9fa;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* ============================================
+   ADMIN CONTAINER
+   ============================================ */
+.admin-container {
+    background-color: #f5f7fa;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+/* ============================================
+   CARDS & PANELS
+   ============================================ */
+.admin-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+    transition: var(--transition);
+    border: 1px solid #e0e0e0;
+}
+
+    .admin-card:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+.admin-card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 15px 20px;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.admin-card-body {
+    padding: 20px;
+}
+
+/* ============================================
+   STATISTICS CARDS
+   ============================================ */
+.stat-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    border-left: 4px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+}
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 147, 30, 0.1));
+        border-radius: 50%;
+        transform: translate(30%, -30%);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-card .stat-icon {
+        font-size: 3rem;
+        opacity: 0.3;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .stat-card .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--dark-color);
+        margin-bottom: 5px;
+    }
+
+    .stat-card .stat-label {
+        color: #6c757d;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Color variants */
+    .stat-card.stat-primary {
+        border-left-color: var(--primary-color);
+    }
+
+    .stat-card.stat-success {
+        border-left-color: var(--success-color);
+    }
+
+    .stat-card.stat-info {
+        border-left-color: var(--info-color);
+    }
+
+    .stat-card.stat-warning {
+        border-left-color: var(--warning-color);
+    }
+
+/* ============================================
+   TABLES
+   ============================================ */
+.admin-table {
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+    .admin-table table {
+        margin-bottom: 0;
+    }
+
+    .admin-table thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+        .admin-table thead th {
+            border: none;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+    .admin-table tbody tr {
+        transition: var(--transition);
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .admin-table tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.01);
+        }
+
+    .admin-table tbody td {
+        padding: 15px;
+        vertical-align: middle;
+    }
+
+/* Table action buttons */
+.table-actions {
+    white-space: nowrap;
+}
+
+    .table-actions .btn {
+        margin: 0 2px;
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-admin {
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: var(--transition);
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .btn-admin:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+.btn-admin-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.btn-admin-success {
+    background: linear-gradient(135deg, #56ab2f, #a8e063);
+    color: white;
+}
+
+.btn-admin-danger {
+    background: linear-gradient(135deg, #eb3349, #f45c43);
+    color: white;
+}
+
+.btn-admin-warning {
+    background: linear-gradient(135deg, #f2994a, #f2c94c);
+    color: white;
+}
+
+.btn-admin-info {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+}
+
+/* Icon buttons */
+.btn-icon {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+    .btn-icon:hover {
+        transform: rotate(360deg) scale(1.1);
+    }
+
+/* ============================================
+   FORMS
+   ============================================ */
+.admin-form {
+    background: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+    .admin-form .form-label {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .admin-form .form-control,
+    .admin-form .form-select {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: var(--transition);
+        font-size: 0.95rem;
+    }
+
+        .admin-form .form-control:focus,
+        .admin-form .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.25);
+            outline: none;
+        }
+
+    .admin-form textarea.form-control {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+/* Form groups with icons */
+.input-group-text {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 8px 0 0 8px;
+}
+
+.input-group .form-control {
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+}
+
+/* ============================================
+   BADGES & LABELS
+   ============================================ */
+.badge-admin {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+    .status-badge::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        animation: pulse 2s infinite;
+    }
+
+.status-available::before {
+    background-color: var(--success-color);
+}
+
+.status-pending::before {
+    background-color: var(--warning-color);
+}
+
+.status-unavailable::before {
+    background-color: var(--danger-color);
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ============================================
+   FILTERS & SEARCH
+   ============================================ */
+.filter-panel {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+}
+
+.search-box {
+    position: relative;
+}
+
+    .search-box input {
+        padding-left: 40px;
+        border-radius: 25px;
+        border: 2px solid #e0e0e0;
+    }
+
+    .search-box .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+    }
+
+/* ============================================
+   ALERTS & NOTIFICATIONS
+   ============================================ */
+.admin-alert {
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--box-shadow);
+    animation: slideInDown 0.5s ease;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-alert .alert-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.admin-pagination .page-link {
+    border-radius: 8px;
+    margin: 0 3px;
+    border: 2px solid #e0e0e0;
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+    .admin-pagination .page-link:hover {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+        transform: scale(1.1);
+    }
+
+.admin-pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-color: var(--primary-color);
+}
+
+/* ============================================
+   BREADCRUMB
+   ============================================ */
+.admin-breadcrumb {
+    background: white;
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+}
+
+    .admin-breadcrumb .breadcrumb {
+        margin-bottom: 0;
+        background: none;
+    }
+
+    .admin-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        font-size: 1.2rem;
+    }
+
+/* ============================================
+   MODAL CUSTOMIZATION
+   ============================================ */
+.modal-admin .modal-content {
+    border-radius: var(--border-radius);
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modal-admin .modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    border: none;
+}
+
+.modal-admin .modal-footer {
+    border-top: 2px solid #f0f0f0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .admin-card-body {
+        padding: 15px;
+    }
+
+    .stat-card {
+        margin-bottom: 15px;
+    }
+
+        .stat-card .stat-icon {
+            font-size: 2rem;
+            right: 10px;
+        }
+
+    .admin-table {
+        font-size: 0.85rem;
+    }
+
+    .table-actions .btn {
+        padding: 3px 8px;
+        font-size: 0.75rem;
+    }
+
+    .btn-admin {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+}
+
+.shadow-hover {
+    transition: var(--transition);
+}
+
+    .shadow-hover:hover {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .btn, .filter-panel, .admin-breadcrumb {
+        display: none;
+    }
+
+    .admin-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
